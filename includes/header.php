@@ -1,5 +1,5 @@
 <?php
-// require 'includes/config.php';
+    require 'includes/functions.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -18,4 +18,8 @@
 </head>
 
 <body>
+
+    <?php
+    require 'includes/navbar.php';
+?>
     <div class="container">
