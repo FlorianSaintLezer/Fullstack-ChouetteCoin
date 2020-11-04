@@ -185,7 +185,7 @@ function ajoutProduits($name, $description, $price, $city, $category, $user_id)
             // Si le try est bon -> on execute
             if ($sth->execute()) {
                 echo "<div class='alert alert-success'> Votre article a été ajouté à la base de données </div>";
-                header('Location: products.php'); //redirection sur la page des produits
+                header('Location: product.php?id='.$conn->lastInsertId()); //redirection sur la page du produit avec le dernier id enregistré
             }
         } catch (PDOException $e) { //Là c'est quand c'est la mouise
             echo 'Error: '.$e->getMessage();
