@@ -133,7 +133,7 @@ function affichageProduits()
     <td><?php echo $product['username']; ?>
     </td>
     <td> <a
-            href="product.php/?id=<?php echo $product['products_id']; ?>">Afficher
+            href="product.php?id=<?php echo $product['products_id']; ?>">Afficher
             article</a>
     </td>
 </tr>
