@@ -12,7 +12,6 @@
     } elseif (isset($_POST['submit_login']) && !empty($_POST['email_login']) && !empty($_POST['password_login'])) { //Si les champs d'INSCRIPTION n'ont pas été renseignés -> Est-ce que les champs de CONNEXION ont été renseignés ?( bouton de connexion, mot de passe et email)
         $email = htmlspecialchars($_POST['email_login']); //variable du mail avec sécurité htmlspecialchars
         $password = htmlspecialchars($_POST['password_login']); //variable du mot de passe avec sécurité htmlspecialchars
-
         connexion($email, $password); // Si oui -> Lance la fonction de CONNEXION
     } else { //Si ni tous les champs d'inscription ni tous les champs de connexion n'ont été renseignés
         if (isset($_POST)) { //si il y a au moins quelque chose

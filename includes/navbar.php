@@ -25,6 +25,8 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#">Profil</a>
+                    <a class="dropdown-item" href="addproducts.php">Ajouter un produit</a>
+                    <hr>
                     <a class="dropdown-item" href="?logout">Déconnexion</a>
                 </div>
                 <?php

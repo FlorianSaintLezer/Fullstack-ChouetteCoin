@@ -23,3 +23,8 @@
     -> Vérification de l'existence de l'email dans la base de données (1er if, avec une requête SELECT et un fetch())
     -> vérification du mot de passe hashed (2ème if avec password_verify())
     -> Lancement d'une session (avec $_SESSION).
+10. Ajouter la variable $conn en GLOBAL à CHAQUE FONCTION plutôt que comme argument
+11. Création d'une fonction d'affichage des données depuis la BDO.
+    -> Faire une requête SELECT à la base de données avec les paramètres de notre choix (en l'occurrence, aucun pour l'instant),
+    -> Faire un array qui contient le fetchALL sur les données récupérées,
+    -> Créer une boucle foreach qui passe chaque ligne des données récupérées depuis la base de données dans un tableau HTML.

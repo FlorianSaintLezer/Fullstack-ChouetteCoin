@@ -2,8 +2,8 @@
 2. Créer une base de données [DONE]
 3. Modéliser nos tables {
     "users"     : "id,email,password,username,phone",
-    "products"  : "products_id,name,description,city,price,user_id,category_id",
-    "categories": "categories_id, name"
+    "products"  : "products_id,products_name,description,city,price,user_id,category_id",
+    "categories": "categories_id, categories_name"
 }
 
 4. Créer nos tables [INPROGRESS]
