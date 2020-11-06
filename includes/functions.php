@@ -105,6 +105,36 @@ function affichageUsers()
     }
 }
 
+// FONCTION D'AFFICHAGE UTILISATEUR ACTIF
+function affichageActiveUser($user_id)
+{
+    global $conn;
+    $sth = $conn->prepare("SELECT * FROM users WHERE id = {$user_id}");
+    $sth->execute();
+
+    $user = $sth->fetch(PDO::FETCH_ASSOC); ?>
+<table class="table">
+    <tbody>
+        <tr>
+            <th scope="col">Username</th>
+            <td scope="col"><?php echo $user['username']; ?>
+            </td>
+        </tr>
+        <tr>
+            <th scope="col">phone</th>
+            <td scope="col"><?php echo $user['phone']; ?>
+            </td>
+        </tr>
+        <tr>
+            <th scope="col">Email</th>
+            <td scope="col"><?php echo $user['email']; ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<?php
+}
+
 // FONCTION D'AFFICHAGE DE LA LISTE DES PRODUITS
 function affichageProduits()
 {
@@ -163,7 +193,7 @@ function affichageProduit($id)
 <?php
 }
 
-// FONCTION AJOUT DE PRODUITS
+// AJOUT DE PRODUITS
 function ajoutProduits($name, $description, $price, $city, $category, $user_id)
 {
     global $conn;
@@ -190,5 +220,78 @@ function ajoutProduits($name, $description, $price, $city, $category, $user_id)
         } catch (PDOException $e) { //Là c'est quand c'est la mouise
             echo 'Error: '.$e->getMessage();
         }
+    }
+}
+
+// MODIFICATION DE PRODUITS
+function modifProduits($name, $description, $price, $city, $category, $id, $user_id)
+{
+    global $conn;
+    // Est-ce que le prix ($price) est un Nombre ET supérieur à 0 ET inférieur à 1000000?
+    if (is_int($price) && $price > 0 && $price < 1000000) {
+        // Si oui -> Try / Catch pour capter erreurs PDO/SQL
+        try {
+            $sth = $conn->prepare('UPDATE products SET products_name = :products_name, description=:description, price=:price, city=:city, category_id=:category_id WHERE products_id=:products_id AND user_id=:user_id');
+            $sth->bindValue(':products_name', $name);
+            $sth->bindValue(':description', $description);
+            $sth->bindValue(':price', $price);
+            $sth->bindValue(':city', $city);
+            $sth->bindValue(':category_id', $category);
+            $sth->bindValue(':products_id', $id);
+            $sth->bindValue(':user_id', $user_id);
+            if ($sth->execute()) {
+                echo '<div class="alert alert-success">Votre modification a bien été prise en compte</div>';
+                header("Location: product.php?id={$id}");
+            }
+        } catch (PDOException $e) {
+            echo 'Error : '.$e->getMessage();
+        }
+    }
+}
+
+// FONCTION D'AFFICHAGE DE LA LISTE DES PRODUITS PAR USER
+function affichageProduitsByUser($user_id)
+{
+    global $conn;
+    // Requête SQL
+    // Ajout d'un WHERE par rapport à l'affichage global de la liste des produits
+    $sth = $conn->prepare("SELECT p.*,c.categories_name FROM products AS p LEFT JOIN categories AS c ON p.category_id = c.categories_id WHERE p.user_id = {$user_id}");
+    $sth->execute(); //Exécution de requête
+
+    $products = $sth->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($products as $product) {
+        //Pour chaque produit '$produit' de la table '$products'...
+        // on crée les éléments HTML suivant :?>
+<tr>
+    <th scope="row"><?php echo $product['products_id']; ?>
+    </th>
+    <td><?php echo $product['products_name']; ?>
+    </td>
+    <td><?php echo $product['description']; ?>
+    </td>
+    <td><?php echo $product['price']; ?>
+    </td>
+    <td><?php echo $product['city']; ?>
+    </td>
+    <td><?php echo $product['categories_name']; ?>
+    </td>
+
+    <td> <a class="btn btn-outline-info"
+            href="product.php?id=<?php echo $product['products_id']; ?>">Afficher</a>
+    </td>
+    <td> <a class="btn btn-outline-warning"
+            href="editproducts.php?id=<?php echo $product['products_id']; ?>">Editer</a>
+    </td>
+
+    <td>
+        <form action="process.php" method="POST">
+            <input type="hidden" name="product_id"
+                value="<?php echo $product['products_id']; ?>" />
+            <input type="submit" name="product_delete" class="btn btn-outline-danger" value="Supprimer" />
+
+        </form>
+    </td>
+</tr>
+<?php
     }
 }
